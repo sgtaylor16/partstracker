@@ -11,17 +11,19 @@ class Parts(Base):
     pn = Column(String,primary_key=True)
     Name = Column(String,nullable=False)
     Weight = Column(Float,nullable=True)
+    qty = Column(Integer,nullable=True)
 
 class Vendors(Base):
     __tablename__ = "Vendors"
-    id = Column(String,primary_key=True)
+    id = Column(Integer,primary_key=True)
     Name = Column(String,nullable=False)
 
 class PartsList(Base):
     __tablename__ = "PartsList"
     fn = Column(Integer,primary_key=True)
-    PartNumber = Column(String,ForeignKey("Parts.pn"))
+    pn = Column(String,ForeignKey("Parts.pn"))
     parts = relationship("Parts",backref= backref("PartsList"))
+    qty = Column(Integer,nullable = False)
 
 class Quotes(Base):
     __tablename__ = "Quotes"
