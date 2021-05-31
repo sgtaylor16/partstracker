@@ -25,12 +25,15 @@ s.add_all([
     PartsList(fn=1,pn='3033072',qty = 1),
     PartsList(fn=2,pn='3033067',qty =1),
     PartsList(fn=3,pn='AS478-10',qty=10),
-    PartsList(fn=4,pn='AN10',qty=10)
+    PartsList(fn=4,pn='AN10',qty=10),
+    PartsList(fn=5,pn='AS478-10',qty=4)
 ])
 
 # Add the Vendors
 
 s.add(Vendors(Name = 'AdvMfg'))
+
+# Add the POs
 
  
 s.commit()

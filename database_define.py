@@ -1,5 +1,5 @@
 
-from sqlalchemy import Column, ForeignKey, Integer, String,DateTime,Date, Float
+from sqlalchemy import Column, ForeignKey, Integer, String,DateTime,Date, Float, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.sql.expression import null
@@ -12,6 +12,8 @@ class Parts(Base):
     Name = Column(String,nullable=False)
     Weight = Column(Float,nullable=True)
     qty = Column(Integer,nullable=True)
+    M_issue = Column(Boolean,nullable = False)
+    F_issue = Column(Boolean,nulable=False)
 
 class Vendors(Base):
     __tablename__ = "Vendors"
@@ -43,3 +45,9 @@ class POs(Base):
     pn = Column(String,ForeignKey("Parts.pn"))
     parts = relationship("Parts",backref=backref("POs"))
     podate = Column(Date,nullable=False)
+    leadtime = Column(Integer,nullable = True)
+    recurring_cost = Column(Float,nullable = False)
+    nre = Column(Float,nullable=False)
+    vendor_id = Column(Integer,ForeignKey("Vendors.id"))
+    vendors = relationship("Vendors",backref=backref("POs"))
+    sap_po = Column(String,nullable=True)

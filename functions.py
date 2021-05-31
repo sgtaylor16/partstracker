@@ -41,6 +41,7 @@ def addTable_Parts(df):
 
 def shortagelist():
     '''Shows the shortage list for the database'''
+    
     sqlstring = """SELECT pn, (sum(qty)) Total_Required
     FROM PartsList
     GROUP BY pn"""
