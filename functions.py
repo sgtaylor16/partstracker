@@ -1,8 +1,13 @@
+from sqlalchemy.sql.selectable import Join
 from database_define import *
+import pandas as pd
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
-addParts(qty)
 
-engine = create_engine('sqlite:///partsTrackerAlchemy.db')
+conn_string = 'sqlite:///partsTrackerAlchemy.db'
+
+engine = create_engine(conn_string)
 
 
 Session = sessionmaker(bind=engine)
@@ -28,5 +33,24 @@ def addPart(pn,name,qty,weight=None,checkdb = True,commit=True):
         s.commit()
     return None
 
+def addTable_Parts(df):
+    '''Adds a DataFrame of data into the database'''
+    for row in df.iterrows():
+        addPart(pn = row['pn'],name = row['name'], qty=row['qty'],commit=False)
+    s.commit() 
 
+def shortagelist():
+    '''Shows the shortage list for the database'''
+    sqlstring = """SELECT pn, (sum(qty)) Total_Required
+    FROM PartsList
+    GROUP BY pn"""
 
+    sqlstring2 = """SELECT Parts.pn, Parts.qty, totals.Total_Required
+    FROM Parts
+    INNER JOIN
+    (SELECT pn, (sum(qty)) "Total_Required"
+    FROM PartsList
+    GROUP BY pn) totals
+    ON Parts.pn = totals.pn"""
+
+    return pd.read_sql_query(sqlstring2,conn_string)
